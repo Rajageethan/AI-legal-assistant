@@ -1,8 +1,9 @@
 services:
+  # Backend API
   - type: web
     name: legal-assistant-api
     env: python
-    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt && echo "Build completed successfully"
     startCommand: python app.py
     envVars:
       - key: PYTHON_VERSION
@@ -16,3 +17,19 @@ services:
       name: chroma-db
       mountPath: /opt/render/project/src/chroma_db
       sizeGB: 1
+
+  # Frontend (Static Site)
+  - type: static
+    name: legal-assistant-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://legal-assistant-api.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html

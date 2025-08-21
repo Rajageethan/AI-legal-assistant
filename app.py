@@ -30,9 +30,10 @@ if __name__ == "__main__":
     print(f"📁 ChromaDB path: {chroma_db_path}")
     
     uvicorn.run(
-        app,
+        "app:app",  # Use string reference for better compatibility
         host=host,
         port=port,
         log_level="info",
-        access_log=True
+        access_log=True,
+        reload=False
     )

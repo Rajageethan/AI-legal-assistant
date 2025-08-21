@@ -51,6 +51,11 @@ async def root():
     else:
         return get_groq_optimized_html()
 
+@app.get("/health")
+async def health_check():
+    """Simple health check for Render"""
+    return {"status": "healthy", "message": "Legal Assistant API is running"}
+
 def get_groq_optimized_html():
     """HTML page optimized for Groq free tier usage"""
     return """
