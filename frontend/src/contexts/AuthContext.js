@@ -10,7 +10,7 @@ import {
   setPersistence,
   browserLocalPersistence
 } from 'firebase/auth';
-import axios from 'axios';
+import { apiClient } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -42,9 +42,8 @@ export const AuthProvider = ({ children }) => {
           setAuthToken(token);
           
           // Authenticate with backend
-          await axios.post('/api/auth/login', 
-            { id_token: token },
-            { headers: { 'Content-Type': 'application/json' } }
+          await apiClient.post('/api/auth/login', 
+            { id_token: token }
           );
           
           setCurrentUser(user);

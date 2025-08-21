@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Send, LogOut, MessageSquare, Trash2, Clock, User, Bot } from 'lucide-react';
-import axios from 'axios';
+import { apiClient } from '../../config/api';
 
 const ChatScreen = () => {
   const [message, setMessage] = useState('');
@@ -11,13 +11,11 @@ const ChatScreen = () => {
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const messagesEndRef = useRef(null);
   
-  const { currentUser, logout, getAuthHeaders } = useAuth();
+  const { currentUser, logout } = useAuth();
 
   const loadChatHistory = React.useCallback(async () => {
     try {
-      const response = await axios.get('/api/chat/history', {
-        headers: getAuthHeaders()
-      });
+      const response = await apiClient.get('/api/chat/history');
       
       if (response.data.success) {
         setChatHistory(response.data.history);
@@ -25,7 +23,7 @@ const ChatScreen = () => {
     } catch (error) {
       console.error('Error loading chat history:', error);
     }
-  }, [getAuthHeaders]);
+  }, []);
 
   useEffect(() => {
     loadChatHistory();
@@ -61,12 +59,10 @@ const ChatScreen = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('/api/chat', {
+      const response = await apiClient.post('/api/chat', {
         message: userMessage.content,
         conversation_id: currentConversationId,
         save_context: true
-      }, {
-        headers: getAuthHeaders()
       });
 
       const botMessage = {
@@ -99,9 +95,7 @@ const ChatScreen = () => {
 
   const loadChatContext = async (conversationId) => {
     try {
-      const response = await axios.get(`/api/chat/context/${conversationId}`, {
-        headers: getAuthHeaders()
-      });
+      const response = await apiClient.get(`/api/chat/context/${conversationId}`);
 
       if (response.data.success) {
         const context = response.data.context;
@@ -146,9 +140,7 @@ const ChatScreen = () => {
     }
 
     try {
-      await axios.delete(`/api/chat/context/${conversationId}`, {
-        headers: getAuthHeaders()
-      });
+      await apiClient.delete(`/api/chat/context/${conversationId}`);
       
       // If this was the current conversation, reset it
       if (currentConversationId === conversationId) {

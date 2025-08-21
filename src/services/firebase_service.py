@@ -54,8 +54,8 @@ class FirebaseService:
                         "client_id": os.getenv('FIREBASE_CLIENT_ID'),
                         "auth_uri": os.getenv('FIREBASE_AUTH_URI', 'https://accounts.google.com/o/oauth2/auth'),
                         "token_uri": os.getenv('FIREBASE_TOKEN_URI', 'https://oauth2.googleapis.com/token'),
-                        "auth_provider_x509_cert_url": os.getenv('FIREBASE_AUTH_PROVIDER_CERT_URL'),
-                        "client_x509_cert_url": os.getenv('FIREBASE_CLIENT_CERT_URL')
+                        "auth_provider_x509_cert_url": os.getenv('FIREBASE_AUTH_PROVIDER_X509_CERT_URL', 'https://www.googleapis.com/oauth2/v1/certs'),
+                        "client_x509_cert_url": os.getenv('FIREBASE_CLIENT_X509_CERT_URL')
                     }
                     
                     # Check if required fields are present
@@ -64,8 +64,9 @@ class FirebaseService:
                         self.app = firebase_admin.initialize_app(cred)
                         print("✅ Firebase initialized with environment variables")
                     else:
-                        print("⚠️ Firebase credentials not found. Please configure Firebase.")
-                        print("Required: FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL")
+                        print("⚠️ Firebase credentials not found. Running without Firebase authentication.")
+                        print("Note: Firebase is optional. The app will work with basic functionality.")
+                        self.app = None
                         return
             else:
                 self.app = firebase_admin.get_app()
