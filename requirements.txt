@@ -1,0 +1,70 @@
+# Core dependencies
+python-dotenv==1.0.0
+requests==2.31.0
+httpx==0.25.2
+
+# FastAPI framework and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# LangChain ecosystem for RAG
+langchain==0.1.0
+langchain-community==0.0.10
+langchain-core==0.1.10
+
+# Vector store and embeddings
+chromadb==0.4.18
+sentence-transformers==2.2.2
+
+# Data processing and validation
+pydantic==2.5.0
+numpy==1.24.4
+pandas==2.1.4
+
+# System monitoring and utilities
+psutil==5.9.6
+ujson==5.8.0
+
+# Firebase integration for authentication and storage
+firebase-admin==6.4.0
+pyrebase4==4.7.1
+
+# Security and authentication
+python-jose[cryptography]==3.3.0
+
+# Groq API client (if using official client)
+groq==0.4.1
+
+# Email validation for user models
+email-validator==2.1.0
+
+# Memory optimization and monitoring
+pympler==0.9
+
+# Logging and monitoring
+structlog==23.2.0
+
+# Development and testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+
+# Additional utilities
+typing-extensions==4.8.0
+uuid==1.30
+
+# Safety and content filtering
+guardrails-ai==0.4.0
+textstat==0.7.3
+profanity-check==1.0.3
+
+# Note: This requirements file includes all packages for:
+# 1. Legal chatbot with RAG capabilities
+# 2. Firebase authentication and storage
+# 3. Groq LLM integration with rate limiting
+# 4. FastAPI web server with CORS
+# 5. ChromaDB vector database
+# 6. User management and chat history
+# 7. System monitoring and optimization
+
+# To install: pip install -r requirements.txt

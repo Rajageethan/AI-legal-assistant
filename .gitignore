@@ -1,0 +1,13 @@
+# Build outputs
+frontend/build/
+frontend/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.production
+frontend/.env.local
+
+# Python cache
+__pycache__/
+*.pyc
