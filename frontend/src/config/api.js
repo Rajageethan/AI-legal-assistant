@@ -1,3 +1,6 @@
+// Create axios instance with base configuration
+import axios from 'axios';
+
 // API configuration for different environments
 const API_CONFIG = {
   // Use environment variable if available, otherwise fallback to localhost for development
@@ -10,9 +13,6 @@ const API_CONFIG = {
     HEALTH: '/api/health'
   }
 };
-
-// Create axios instance with base configuration
-import axios from 'axios';
 
 const apiClient = axios.create({
   baseURL: API_CONFIG.BASE_URL,
