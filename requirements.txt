@@ -56,9 +56,10 @@ typing-extensions==4.8.0
 uuid==1.30
 
 # Safety and content filtering
-guardrails-ai
+# guardrails-ai  # Temporarily disabled due to torch compatibility
 textstat
-profanity-check
+# profanity-check  # Optional - can cause issues
+torch>=2.0.0
 
 # Note: This requirements file includes all packages for:
 # 1. Legal chatbot with RAG capabilities

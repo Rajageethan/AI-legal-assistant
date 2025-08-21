@@ -221,12 +221,15 @@ class GuardrailsIntegration:
         self.is_available = self._check_guardrails_availability()
     
     def _check_guardrails_availability(self) -> bool:
-        """Check if Guardrails is available"""
+        """Check if Guardrails is available and properly configured"""
         try:
-            import guardrails as gd
-            return True
+            # Temporarily disable guardrails due to torch compatibility issues
+            self.guardrails_available = False
+            print("⚠️ Guardrails temporarily disabled - using basic content filtering only")
+            return False
         except ImportError:
-            self.logger.warning("Guardrails not available. Using basic content filtering.")
+            self.guardrails_available = False
+            print("⚠️ Guardrails not available - using basic content filtering only")
             return False
     
     async def validate_with_guardrails(self, text: str, validation_type: str = "legal_response") -> Dict[str, Any]:
