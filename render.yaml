@@ -8,11 +8,10 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
-      - key: PORT
-        fromService:
-          type: web
-          name: legal-assistant-api
-          property: port
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CHROMA_DB_PATH
+        value: ./chroma_db
     disk:
       name: chroma-db
       mountPath: /opt/render/project/src/chroma_db
@@ -26,10 +25,23 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 18
+      - key: REACT_APP_FIREBASE_API_KEY
+        value: AIzaSyA3zW4kZ_dT5jIKPI4qI5FyqgXb0ZSVxAM
+      - key: REACT_APP_FIREBASE_AUTH_DOMAIN
+        value: clegora.firebaseapp.com
+      - key: REACT_APP_FIREBASE_PROJECT_ID
+        value: clegora
+      - key: REACT_APP_FIREBASE_STORAGE_BUCKET
+        value: clegora.firebasestorage.app
+      - key: REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+        value: 325502068501
+      - key: REACT_APP_FIREBASE_APP_ID
+        value: 1:325502068501:web:21d8d0ac71f017b22deb1c
+      - key: REACT_APP_FIREBASE_MEASUREMENT_ID
+        value: G-JT7PG2KS5T
+      - key: REACT_APP_API_URL
+        value: https://legal-assistant-api.onrender.com/api
     routes:
-      - type: rewrite
-        source: /api/*
-        destination: https://legal-assistant-api.onrender.com/api/*
       - type: rewrite
         source: /*
         destination: /index.html
