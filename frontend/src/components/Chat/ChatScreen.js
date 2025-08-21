@@ -21,7 +21,8 @@ const ChatScreen = () => {
         setChatHistory(response.data.history);
       }
     } catch (error) {
-      console.error('Error loading chat history:', error);
+      console.warn('Chat history unavailable - backend not connected:', error.message);
+      // Continue without chat history
     }
   }, []);
 
@@ -74,17 +75,27 @@ const ChatScreen = () => {
       };
 
       setMessages(prev => [...prev, botMessage]);
-      setCurrentConversationId(response.data.conversation_id);
       
-      // Reload chat history to show updated conversation
-      await loadChatHistory();
+      // Update conversation ID if it's a new conversation
+      if (response.data.conversation_id && response.data.conversation_id !== currentConversationId) {
+        setCurrentConversationId(response.data.conversation_id);
+      }
       
+      // Refresh chat history
+      loadChatHistory();
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      let errorContent = "I'm sorry, I'm having trouble connecting to the server right now. Please try again later.";
+      
+      if (error.message === 'Backend service unavailable') {
+        errorContent = "The AI service is currently unavailable. Please check that the backend is deployed and running.";
+      }
+      
       const errorMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: errorContent,
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, errorMessage]);

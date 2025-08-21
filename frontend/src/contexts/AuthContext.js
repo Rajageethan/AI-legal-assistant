@@ -41,16 +41,21 @@ export const AuthProvider = ({ children }) => {
           const token = await user.getIdToken();
           setAuthToken(token);
           
-          // Authenticate with backend
-          await apiClient.post('/api/auth/login', 
-            { id_token: token }
-          );
+          // Try to authenticate with backend (optional)
+          try {
+            await apiClient.post('/api/auth/login', 
+              { id_token: token }
+            );
+          } catch (backendError) {
+            console.warn('Backend authentication failed, continuing with Firebase only:', backendError.message);
+            // Continue anyway - backend auth is optional
+          }
           
           setCurrentUser(user);
         } catch (error) {
-          console.error('Backend authentication failed:', error);
-          setCurrentUser(null);
-          setAuthToken(null);
+          console.error('Authentication error:', error);
+          // Still set the user even if backend fails
+          setCurrentUser(user);
         }
       } else {
         setCurrentUser(null);

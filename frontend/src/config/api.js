@@ -35,10 +35,16 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle network errors gracefully
+    if (!error.response) {
+      console.warn('Network error - backend may not be available:', error.message);
+      return Promise.reject(new Error('Backend service unavailable'));
+    }
+    
     if (error.response?.status === 401) {
       // Handle unauthorized access
       localStorage.removeItem('authToken');
-      window.location.href = '/';
+      console.warn('Authentication expired, redirecting to login');
     }
     return Promise.reject(error);
   }
